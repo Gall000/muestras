@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Automatización — Cómo se ve por dentro</title>
+<meta name="description" content="Lo que pasa cuando entra una consulta: se anota sola en la planilla, avisa por mail y le contesta al cliente.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--fondo:#F2F4F3;--blanco:#FFFFFF;--tinta:#18211D;--gris:#5E6B65;--linea:#D7DDDA;--verde:#1E7F4F;--verde2:#E3F2EA;--azul:#2B5FD9;--azul2:#E6EDFC;--ambar:#C98A12;--ambar2:#FBF1DC}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Space Grotesk",system-ui,sans-serif;background:var(--fondo);color:var(--tinta);-webkit-font-smoothing:antialiased;line-height:1.45}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--azul);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+
+.cab{padding:26px 0 10px}
+.cab h1{font-size:clamp(1.7rem,6vw,2.6rem);font-weight:700;letter-spacing:-.02em;line-height:1.05;max-width:20ch}
+.cab p{color:var(--gris);max-width:60ch;margin-top:8px}
+.controles{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.btn{border:0;background:var(--tinta);color:#fff;border-radius:10px;padding:12px 16px;font-weight:600}
+.btn.sec{background:var(--blanco);color:var(--tinta);border:1px solid var(--linea)}
+.btn:disabled{opacity:.4;cursor:default}
+
+.antes{background:var(--ambar2);border:1px solid #EBD3A0;border-radius:12px;padding:14px 16px;margin-top:18px;font-size:.95rem}
+.antes b{color:#7A5208}
+
+.tablero{display:grid;gap:14px;padding:18px 0 40px}
+.col{background:var(--blanco);border:1px solid var(--linea);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.col-cab{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--linea);font-weight:600}
+.col-cab .n{width:26px;height:26px;border-radius:50%;background:var(--fondo);display:grid;place-items:center;font-size:.85rem;flex:none}
+.col-cab small{display:block;font-weight:400;color:var(--gris);font-size:.82rem}
+.col.activo{border-color:var(--azul);box-shadow:0 0 0 3px var(--azul2)}
+.col.activo .n{background:var(--azul);color:#fff}
+.col.hecho .n{background:var(--verde);color:#fff}
+.cuerpo{padding:14px;flex:1}
+
+/* 1. el formulario del cliente */
+.campo{display:grid;gap:4px;margin-bottom:10px;font-size:.9rem}
+.campo span{font-weight:600}
+.campo input,.campo select{border:1px solid var(--linea);border-radius:8px;padding:9px 10px;background:var(--blanco);width:100%}
+.enviar{width:100%;background:var(--verde);color:#fff;border:0;border-radius:8px;padding:11px;font-weight:600}
+
+/* 2. la planilla */
+.hoja{overflow-x:auto;font-size:.82rem}
+.hoja table{border-collapse:collapse;width:100%;min-width:520px}
+.hoja th,.hoja td{border:1px solid #E1E5E3;padding:6px 8px;text-align:left;white-space:nowrap}
+.hoja th{background:#F6F8F7;font-weight:600;color:var(--gris)}
+.hoja td:first-child,.hoja th:first-child{background:#F6F8F7;color:var(--gris);text-align:center;width:30px}
+.hoja tr.nueva td{background:#E8F5EE;animation:flash 1.6s ease-out}
+.hoja tr.nueva td:first-child{background:#D2EBDD}
+@keyframes flash{from{background:#B9E3CB}to{background:#E8F5EE}}
+.estado{display:inline-block;border-radius:4px;padding:1px 6px;font-size:.78rem;font-weight:600}
+.estado.nuevo{background:var(--azul2);color:var(--azul)}
+.estado.resp{background:var(--verde2);color:var(--verde)}
+.hoja-pie{display:flex;justify-content:space-between;font-size:.8rem;color:var(--gris);padding:8px 2px 0}
+
+/* 3. avisos */
+.aviso{border:1px solid var(--linea);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:.88rem;opacity:.35;transition:opacity .4s,transform .4s;transform:translateY(4px)}
+.aviso.on{opacity:1;transform:none}
+.aviso .de{display:flex;justify-content:space-between;gap:8px;color:var(--gris);font-size:.8rem;margin-bottom:4px}
+.aviso b{display:block}
+.aviso.wa{background:#EAF7EE;border-color:#CDEBD6}
+.aviso.mail{background:var(--azul2);border-color:#CBD8F6}
+.vacio{color:var(--gris);font-size:.9rem;padding:8px 0}
+
+.resumen{background:var(--tinta);color:#E3E9E6;border-radius:14px;padding:18px;display:grid;gap:12px}
+.resumen h2{font-size:1.25rem;color:#fff}
+.resumen ul{list-style:none;display:grid;gap:8px}
+.resumen li{display:flex;gap:10px}
+.resumen li::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:#5CC98E;margin-top:8px}
+
+@media (min-width:900px){.tablero{grid-template-columns:1fr 1.6fr 1fr}.resumen{grid-column:1/-1}}
+@media (orientation:landscape) and (max-height:500px){.tablero{grid-template-columns:1fr 1.5fr 1fr}.resumen{grid-column:1/-1}.cab{padding-top:14px}}
+@media (prefers-reduced-motion:reduce){.aviso{transition:none}.hoja tr.nueva td{animation:none}}
+</style>
+</head>
+<body>
+<header class="cab wrap">
+  <h1>Una consulta entra, y todo lo demás se hace solo</h1>
+  <p>Ejemplo con un taller de aire acondicionado de Avellaneda. El cliente completa el formulario; la consulta se anota en la planilla, al dueño le llega el aviso y al cliente una respuesta, sin que nadie copie nada a mano.</p>
+  <div class="controles">
+    <button class="btn" id="auto">Ver un ejemplo</button>
+    <button class="btn sec" id="reset">Empezar de nuevo</button>
+  </div>
+  <div class="antes"><b>Antes:</b> las consultas llegaban por WhatsApp, Instagram y teléfono, se anotaban en un cuaderno cuando había tiempo y más de una quedaba sin respuesta.</div>
+</header>
+
+<main class="wrap tablero">
+  <section class="col" id="c1">
+    <div class="col-cab"><span class="n">1</span><div>Lo que ve el cliente<small>Formulario en la web o en el link de Instagram</small></div></div>
+    <form class="cuerpo" id="form" autocomplete="off">
+      <label class="campo"><span>Nombre</span><input id="fNom" placeholder="Ej. Marta Ruiz"></label>
+      <label class="campo"><span>Celular</span><input id="fTel" type="tel" placeholder="11 2345-6789"></label>
+      <label class="campo"><span>¿Qué necesitás?</span><select id="fTipo"><option>Instalación de split</option><option>Service y limpieza</option><option>No enfría / reparación</option><option>Carga de gas</option></select></label>
+      <label class="campo"><span>Barrio</span><select id="fBarrio"><option>Avellaneda centro</option><option>Wilde</option><option>Sarandí</option><option>Dock Sud</option><option>Gerli</option></select></label>
+      <button class="enviar" type="submit">Enviar consulta</button>
+    </form>
+  </section>
+
+  <section class="col" id="c2">
+    <div class="col-cab"><span class="n">2</span><div>La planilla del taller<small>Se completa sola, una fila por consulta</small></div></div>
+    <div class="cuerpo">
+      <div class="hoja"><table>
+        <thead><tr><th></th><th>Fecha</th><th>Cliente</th><th>Celular</th><th>Pedido</th><th>Barrio</th><th>Estado</th></tr></thead>
+        <tbody id="filas"></tbody>
+      </table></div>
+      <div class="hoja-pie"><span id="cuenta"></span><span>Consultas 2026</span></div>
+    </div>
+  </section>
+
+  <section class="col" id="c3">
+    <div class="col-cab"><span class="n">3</span><div>Los avisos<small>Salen solos, en segundos</small></div></div>
+    <div class="cuerpo" id="avisos"><p class="vacio">Cuando entre una consulta, acá vas a ver el aviso al dueño y la respuesta al cliente.</p></div>
+  </section>
+
+  <section class="resumen">
+    <h2>Qué cambia para el negocio</h2>
+    <ul>
+      <li>Ninguna consulta se pierde: todas quedan en la planilla, con fecha y estado.</li>
+      <li>El dueño se entera al instante en el celular, aunque esté arriba de un techo.</li>
+      <li>El cliente recibe respuesta en segundos y sabe cuándo lo van a llamar.</li>
+      <li>A fin de mes se ve cuántas consultas entraron, de qué y de qué barrio.</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+const $=s=>document.querySelector(s);
+const PREV=[
+ ["10/10 09:12","Ricardo Paz","11 4421-8890","Service y limpieza","Wilde","resp"],
+ ["10/10 15:47","Natalia Gómez","11 6012-3345","Instalación de split","Sarandí","resp"],
+ ["11/10 11:03","Hugo Benítez","11 3398-1120","Carga de gas","Avellaneda centro","resp"],
+ ["12/10 18:26","Sole Vera","11 5567-0912","No enfría / reparación","Gerli","resp"],
+];
+const EJ={nom:"Marta Ruiz",tel:"11 2345-6789",tipo:"No enfría / reparación",barrio:"Dock Sud"};
+const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+const espera=ms=>new Promise(r=>setTimeout(r,reduce?0:ms));
+let filas=[],corriendo=false;
+
+function pintarFilas(nueva){
+  $("#filas").innerHTML=filas.map((f,i)=>`<tr class="${nueva&&i===filas.length-1?"nueva":""}"><td>${i+2}</td><td>${f[0]}</td><td>${f[1]}</td><td>${f[2]}</td><td>${f[3]}</td><td>${f[4]}</td><td><span class="estado ${f[5]}">${f[5]==="resp"?"Respondida":"Nueva"}</span></td></tr>`).join("");
+  $("#cuenta").textContent=`${filas.length} consultas este mes`;
+}
+function reset(){
+  filas=PREV.map(x=>[...x]);pintarFilas();
+  $("#avisos").innerHTML=`<p class="vacio">Cuando entre una consulta, acá vas a ver el aviso al dueño y la respuesta al cliente.</p>`;
+  ["c1","c2","c3"].forEach(id=>$("#"+id).classList.remove("activo","hecho"));
+  $("#form").reset();
+}
+reset();
+
+async function tipear(el,txt){el.value="";for(const ch of txt){el.value+=ch;await espera(45)}}
+async function procesar(d){
+  corriendo=true;$("#auto").disabled=true;
+  const ahora=new Date(new Date().toLocaleString("en-US",{timeZone:"America/Argentina/Buenos_Aires"}));
+  const fecha=`${String(ahora.getDate()).padStart(2,"0")}/${String(ahora.getMonth()+1).padStart(2,"0")} ${String(ahora.getHours()).padStart(2,"0")}:${String(ahora.getMinutes()).padStart(2,"0")}`;
+  $("#c1").classList.replace("activo","hecho")||$("#c1").classList.add("hecho");
+  $("#c2").classList.add("activo");
+  await espera(700);
+  filas.push([fecha,d.nom,d.tel,d.tipo,d.barrio,"nuevo"]);pintarFilas(true);
+  await espera(1200);
+  $("#c2").classList.replace("activo","hecho");$("#c3").classList.add("activo");
+  if(innerWidth<900)$("#c3").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
+  $("#avisos").innerHTML=`
+   <div class="aviso wa" id="a1"><div class="de"><span>WhatsApp al dueño</span><span>${fecha.slice(6)}</span></div><b>Nueva consulta: ${d.tipo}</b>${d.nom} · ${d.barrio} · ${d.tel}</div>
+   <div class="aviso mail" id="a2"><div class="de"><span>Email al dueño</span><span>${fecha.slice(6)}</span></div><b>Fila ${filas.length+1} agregada a «Consultas 2026»</b>Con el resumen y el botón para llamar al cliente.</div>
+   <div class="aviso wa" id="a3"><div class="de"><span>Respuesta al cliente</span><span>${fecha.slice(6)}</span></div><b>Hola ${d.nom.split(" ")[0]}, recibimos tu consulta</b>Te llamamos hoy antes de las 19 h para coordinar la visita. Frío Sur, Avellaneda.</div>`;
+  for(const id of ["a1","a2","a3"]){await espera(900);$("#"+id).classList.add("on")}
+  await espera(900);
+  filas[filas.length-1][5]="resp";pintarFilas(true);
+  $("#c3").classList.replace("activo","hecho");
+  corriendo=false;$("#auto").disabled=false;
+}
+$("#form").onsubmit=e=>{
+  e.preventDefault();if(corriendo)return;
+  const d={nom:$("#fNom").value.trim()||"Cliente sin nombre",tel:$("#fTel").value.trim()||"sin celular",tipo:$("#fTipo").value,barrio:$("#fBarrio").value};
+  procesar(d);
+};
+$("#auto").onclick=async()=>{
+  if(corriendo)return;reset();corriendo=true;$("#auto").disabled=true;
+  $("#c1").classList.add("activo");
+  if(innerWidth<900)$("#c1").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
+  await tipear($("#fNom"),EJ.nom);await tipear($("#fTel"),EJ.tel);
+  $("#fTipo").value=EJ.tipo;await espera(400);$("#fBarrio").value=EJ.barrio;await espera(600);
+  if(innerWidth<900)$("#c2").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
+  await procesar(EJ);
+};
+$("#reset").onclick=()=>{if(!corriendo)reset()};
+</script>
+</body>
+</html>

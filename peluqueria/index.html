@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Estudio Mara — Pedí tu turno</title>
+<meta name="description" content="Pedí tu turno en Estudio Mara, Banfield: corte, color, alisado y manos. Elegís día y horario en el momento.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--ciruela:#3B2A4A;--lila:#B9A6D9;--lila2:#EEE8F7;--fondo:#F7F5FA;--blanco:#FFFFFF;--tinta:#1E1724;--gris:#6B6275;--linea:#E3DDEA;--ok:#2F7D57}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Instrument Sans",system-ui,sans-serif;background:var(--fondo);color:var(--tinta);-webkit-font-smoothing:antialiased;line-height:1.45}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--lila);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 18px}
+
+.cab{background:var(--ciruela);color:#fff;padding:28px 0 30px}
+.cab .wrap{display:grid;gap:4px}
+.cab .marca{font-family:"Instrument Serif",serif;font-size:clamp(2.4rem,9vw,3.6rem);line-height:.95;letter-spacing:-.01em}
+.cab .marca i{color:var(--lila)}
+.cab p{color:#D8CFE3;max-width:46ch}
+
+.app{display:grid;gap:20px;padding:22px 0 50px}
+.app>div{min-width:0}
+.pasos{display:flex;gap:6px;margin-bottom:6px}
+.pasos span{flex:1;height:4px;border-radius:4px;background:var(--linea)}
+.pasos span.on{background:var(--ciruela)}
+.panel{background:var(--blanco);border:1px solid var(--linea);border-radius:16px;padding:20px}
+.panel h2{font-family:"Instrument Serif",serif;font-weight:400;font-size:1.9rem;line-height:1.05;margin-bottom:4px}
+.panel .sub{color:var(--gris);font-size:.95rem;margin-bottom:16px}
+.paso-n{font-size:.85rem;color:var(--gris);font-weight:600}
+
+.opciones{display:grid;gap:10px}
+.op{display:flex;justify-content:space-between;gap:12px;align-items:center;text-align:left;border:1px solid var(--linea);background:var(--blanco);border-radius:12px;padding:14px 16px;width:100%}
+.op:hover{border-color:var(--lila)}
+.op[aria-pressed="true"]{border-color:var(--ciruela);background:var(--lila2)}
+.op b{display:block;font-weight:600}
+.op small{color:var(--gris)}
+.op .dur{flex:none;font-size:.85rem;color:var(--gris);text-align:right}
+.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:"Instrument Serif",serif;font-size:1.4rem;color:#fff;flex:none}
+.op .izq{display:flex;gap:12px;align-items:center}
+
+.dias{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.dias::-webkit-scrollbar{display:none}
+.dia{flex:none;width:62px;border:1px solid var(--linea);background:var(--blanco);border-radius:12px;padding:8px 0;text-align:center}
+.dia small{display:block;font-size:.75rem;color:var(--gris);text-transform:capitalize}
+.dia b{font-size:1.3rem;font-weight:600}
+.dia:disabled{opacity:.4;cursor:not-allowed;background:var(--fondo)}
+.dia[aria-pressed="true"]{background:var(--ciruela);border-color:var(--ciruela);color:#fff}
+.dia[aria-pressed="true"] small{color:#D8CFE3}
+.mes{font-weight:600;margin:4px 0 10px}
+.mes::first-letter{text-transform:uppercase}
+.horas{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
+.hora{border:1px solid var(--linea);background:var(--blanco);border-radius:10px;padding:10px 0;font-weight:600;font-variant-numeric:tabular-nums}
+.hora:disabled{text-decoration:line-through;color:#B9B2C2;background:var(--fondo);cursor:not-allowed}
+.hora[aria-pressed="true"]{background:var(--ciruela);border-color:var(--ciruela);color:#fff}
+.franja{font-size:.85rem;color:var(--gris);margin-top:14px;grid-column:1/-1}
+
+.campo{display:grid;gap:6px;margin-top:14px}
+.campo span{font-weight:600;font-size:.92rem}
+.campo input{border:1px solid var(--linea);border-radius:10px;padding:12px;background:var(--blanco);width:100%}
+.err{color:#B42318;font-size:.88rem;min-height:1.2em;margin-top:10px}
+
+.nav{display:flex;gap:10px;margin-top:20px}
+.btn{flex:1;border:0;background:var(--ciruela);color:#fff;border-radius:12px;padding:14px;font-weight:600}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.sec{flex:none;background:var(--lila2);color:var(--ciruela);padding:14px 18px}
+
+.resumen{background:var(--blanco);border:1px solid var(--linea);border-radius:16px;padding:18px;align-self:start}
+.resumen h3{font-family:"Instrument Serif",serif;font-weight:400;font-size:1.4rem;margin-bottom:8px}
+.resumen dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.95rem}
+.resumen dt{color:var(--gris)}
+.resumen dd{font-weight:600}
+.resumen .vacio{color:var(--gris);font-size:.92rem}
+.resumen .info{border-top:1px solid var(--linea);margin-top:14px;padding-top:12px;font-size:.88rem;color:var(--gris)}
+
+.listo{text-align:center;padding:10px 0}
+.listo .tilde{width:68px;height:68px;border-radius:50%;background:var(--ok);display:grid;place-items:center;margin:0 auto 14px}
+.ticket{border:1px dashed var(--lila);border-radius:12px;padding:16px;margin:16px 0;text-align:left;background:var(--lila2)}
+.ticket div{display:flex;justify-content:space-between;gap:10px;padding:4px 0}
+.ticket span{color:var(--gris)}
+.mail{font-size:.86rem;color:var(--gris)}
+
+@media (min-width:760px){
+  .app{grid-template-columns:1.6fr 1fr;align-items:start}
+  .resumen{position:sticky;top:18px}
+  .horas{grid-template-columns:repeat(6,1fr)}
+}
+@media (orientation:landscape) and (max-height:500px){.cab{padding:16px 0}}
+</style>
+</head>
+<body>
+<header class="cab">
+  <div class="wrap">
+    <div class="marca">Estudio <i>Mara</i></div>
+    <p>Peluquería y color en Banfield. Pedí tu turno acá en un minuto, sin esperar que te contesten.</p>
+  </div>
+</header>
+
+<main class="wrap app">
+  <div>
+    <div class="pasos" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    <div class="panel" id="panel"></div>
+  </div>
+  <aside class="resumen" id="resumen" aria-live="polite"></aside>
+</main>
+
+<script>
+const SERV=[
+ {n:"Corte",d:"Lavado, corte y peinado.",min:45,p:14000},
+ {n:"Corte y brushing",d:"Corte con secado a cepillo.",min:60,p:19000},
+ {n:"Color raíz",d:"Retoque de raíz, incluye lavado.",min:90,p:28000},
+ {n:"Mechas o balayage",d:"Precio desde, según el largo.",min:150,p:52000},
+ {n:"Alisado",d:"Alisado con keratina.",min:120,p:45000},
+ {n:"Manicuría semipermanente",d:"Esmaltado semipermanente en manos.",min:60,p:13000},
+];
+const PROF=[
+ {n:"Cualquiera disponible",d:"Te damos el primer horario libre.",c:"#B9A6D9",l:"✦"},
+ {n:"Mara",d:"Color y mechas.",c:"#3B2A4A",l:"M"},
+ {n:"Lucía",d:"Cortes y brushing.",c:"#7A5C8F",l:"L"},
+ {n:"Sofi",d:"Manicuría.",c:"#A57BA0",l:"S"},
+];
+const plata=n=>"$"+n.toLocaleString("es-AR");
+const $=s=>document.querySelector(s);
+const BA=()=>new Date(new Date().toLocaleString("en-US",{timeZone:"America/Argentina/Buenos_Aires"}));
+const st={paso:0,serv:null,prof:null,dia:null,hora:null,nom:"",tel:"",mail:""};
+
+// Días: los próximos 14, domingo y lunes cerrado
+const hoy=BA();hoy.setHours(0,0,0,0);
+const DIAS=[...Array(14)].map((_,i)=>{const d=new Date(hoy);d.setDate(d.getDate()+i);return d});
+const abierto=d=>![0,1].includes(d.getDay());
+const fmtD=d=>d.toLocaleDateString("es-AR",{weekday:"long",day:"numeric",month:"long"});
+// Horarios ocupados, fijos por día para que la demo sea estable
+function libres(d){
+  const out=[],sem=d.getDate()*7+d.getMonth()*13;
+  for(let h=9;h<19;h++)for(const m of [0,30]){
+    const k=h*60+m;
+    let ocupado=((sem+h*3+m)%5===0)||((sem+h)%7===0&&m===0);
+    if(d.getTime()===hoy.getTime()){const n=BA();if(k<=n.getHours()*60+n.getMinutes()+60)ocupado=true}
+    out.push({t:`${h}:${m?"30":"00"}`,ocupado,k});
+  }
+  return out;
+}
+
+function pintar(){
+  document.querySelectorAll(".pasos span").forEach((s,i)=>s.classList.toggle("on",i<=st.paso));
+  const P=$("#panel");
+  if(st.paso===0){
+    P.innerHTML=`<p class="paso-n">Paso 1 de 4</p><h2>¿Qué te querés hacer?</h2><p class="sub">Elegí un servicio. El precio es el de lista.</p>
+     <div class="opciones">${SERV.map((s,i)=>`<button class="op" data-i="${i}" aria-pressed="${st.serv===i}"><span><b>${s.n}</b><small>${s.d}</small></span><span class="dur">${plata(s.p)}<br>${s.min} min</span></button>`).join("")}</div>
+     <div class="nav"><button class="btn" id="sig" ${st.serv==null?"disabled":""}>Seguir</button></div>`;
+    P.querySelector(".opciones").onclick=e=>{const b=e.target.closest(".op");if(b){st.serv=+b.dataset.i;st.paso=1;pintar()}};
+  }
+  if(st.paso===1){
+    P.innerHTML=`<p class="paso-n">Paso 2 de 4</p><h2>¿Con quién?</h2><p class="sub">Si no tenés preferencia, te damos el primer horario libre.</p>
+     <div class="opciones">${PROF.map((p,i)=>`<button class="op" data-i="${i}" aria-pressed="${st.prof===i}"><span class="izq"><span class="avatar" style="background:${p.c}">${p.l}</span><span><b>${p.n}</b><small>${p.d}</small></span></span></button>`).join("")}</div>
+     <div class="nav"><button class="btn sec" id="ant">Volver</button></div>`;
+    P.querySelector(".opciones").onclick=e=>{const b=e.target.closest(".op");if(b){st.prof=+b.dataset.i;st.paso=2;pintar()}};
+  }
+  if(st.paso===2){
+    if(st.dia==null)st.dia=DIAS.findIndex(abierto);
+    const d=DIAS[st.dia],hs=libres(d);
+    P.innerHTML=`<p class="paso-n">Paso 3 de 4</p><h2>Elegí día y horario</h2><p class="sub">Atendemos de martes a sábado, de 9 a 19.</p>
+     <p class="mes">${d.toLocaleDateString("es-AR",{month:"long",year:"numeric"})}</p>
+     <div class="dias">${DIAS.map((x,i)=>`<button class="dia" data-i="${i}" ${abierto(x)?"":"disabled"} aria-pressed="${i===st.dia}" aria-label="${fmtD(x)}"><small>${x.toLocaleDateString("es-AR",{weekday:"short"}).replace(".","")}</small><b>${x.getDate()}</b></button>`).join("")}</div>
+     <div class="horas">${hs.some(h=>!h.ocupado)?hs.map(h=>`<button class="hora" data-t="${h.t}" ${h.ocupado?"disabled":""} aria-pressed="${st.hora===h.t}">${h.t}</button>`).join(""):`<p class="franja">No quedan horarios para este día. Probá con otro.</p>`}</div>
+     <div class="nav"><button class="btn sec" id="ant">Volver</button><button class="btn" id="sig" ${st.hora?"":"disabled"}>Seguir</button></div>`;
+    P.querySelector(".dias").onclick=e=>{const b=e.target.closest(".dia");if(b&&!b.disabled){st.dia=+b.dataset.i;st.hora=null;pintar()}};
+    P.querySelector(".horas").onclick=e=>{const b=e.target.closest(".hora");if(b&&!b.disabled){st.hora=b.dataset.t;pintar()}};
+    P.querySelector('.dia[aria-pressed="true"]')?.scrollIntoView({block:"nearest",inline:"center"});
+  }
+  if(st.paso===3){
+    P.innerHTML=`<p class="paso-n">Paso 4 de 4</p><h2>Tus datos</h2><p class="sub">Para confirmarte el turno y avisarte el día anterior.</p>
+     <label class="campo"><span>Nombre y apellido</span><input id="nom" autocomplete="name" value="${st.nom}" placeholder="Ej. Carolina Pérez"></label>
+     <label class="campo"><span>Celular</span><input id="tel" type="tel" autocomplete="tel" value="${st.tel}" placeholder="11 2345-6789"></label>
+     <label class="campo"><span>Email</span><input id="mail" type="email" autocomplete="email" value="${st.mail}" placeholder="para recibir la confirmación"></label>
+     <p class="err" id="err"></p>
+     <div class="nav"><button class="btn sec" id="ant">Volver</button><button class="btn" id="conf">Confirmar turno</button></div>`;
+    ["nom","tel","mail"].forEach(k=>$("#"+k).oninput=e=>{st[k]=e.target.value;resumen()});
+    $("#conf").onclick=()=>{
+      if(st.nom.trim().length<3)return err("Falta tu nombre.","nom");
+      if(st.tel.replace(/\D/g,"").length<8)return err("Revisá el celular: tiene que tener al menos 8 números.","tel");
+      if(!/^\S+@\S+\.\S+$/.test(st.mail))return err("Revisá el email: ahí te llega la confirmación.","mail");
+      st.paso=4;pintar();
+    };
+  }
+  if(st.paso===4){
+    const s=SERV[st.serv];
+    document.querySelectorAll(".pasos span").forEach(x=>x.classList.add("on"));
+    P.innerHTML=`<div class="listo">
+      <div class="tilde"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></div>
+      <h2>Turno confirmado</h2><p class="sub" style="margin:0">Te esperamos, ${st.nom.split(" ")[0]}.</p>
+      <div class="ticket">
+        <div><span>Servicio</span><b>${s.n}</b></div>
+        <div><span>Con</span><b>${st.prof===0?"Primera disponible":PROF[st.prof].n}</b></div>
+        <div><span>Cuándo</span><b style="text-align:right">${fmtD(DIAS[st.dia])}, ${st.hora} h</b></div>
+        <div><span>Dónde</span><b>Maipú 455, Banfield</b></div>
+      </div>
+      <p class="mail">Te mandamos la confirmación a ${st.mail} y un recordatorio el día anterior. Si no podés venir, cancelás desde el mismo email.</p>
+      <div class="nav"><button class="btn sec" id="nuevo" style="flex:1">Pedir otro turno</button></div></div>`;
+    $("#nuevo").onclick=()=>{Object.assign(st,{paso:0,serv:null,prof:null,dia:null,hora:null});pintar()};
+  }
+  $("#ant")&&($("#ant").onclick=()=>{st.paso--;pintar()});
+  $("#sig")&&($("#sig").onclick=()=>{st.paso++;pintar()});
+  resumen();
+}
+function err(t,id){$("#err").textContent=t;$("#"+id).focus()}
+function resumen(){
+  const s=st.serv!=null?SERV[st.serv]:null;
+  $("#resumen").innerHTML=`<h3>Tu turno</h3>${s?`<dl>
+    <dt>Servicio</dt><dd>${s.n}</dd>
+    ${st.prof!=null?`<dt>Con</dt><dd>${PROF[st.prof].n}</dd>`:""}
+    ${st.hora?`<dt>Cuándo</dt><dd>${fmtD(DIAS[st.dia])}, ${st.hora} h</dd>`:""}
+    <dt>Duración</dt><dd>${s.min} min</dd>
+    <dt>Precio</dt><dd>${plata(s.p)}</dd></dl>`:`<p class="vacio">Todavía no elegiste nada.</p>`}
+    <div class="info">Maipú 455, Banfield · Pagás en el local con efectivo, débito o transferencia.</div>`;
+}
+pintar();
+</script>
+</body>
+</html>

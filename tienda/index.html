@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Lupe — Ropa de mujer en Adrogué</title>
+<meta name="description" content="Catálogo de Lupe: remeras, vestidos, pantalones y abrigos. Consultá talle y color por WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--blanco:#FFFFFF;--piedra:#EEECE8;--salvia:#7E9B7F;--rubor:#EBC9C1;--tinta:#232323;--gris:#6F6F6B;--linea:#E2DFDA}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Manrope",system-ui,sans-serif;background:var(--blanco);color:var(--tinta);-webkit-font-smoothing:antialiased;line-height:1.45}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--tinta);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 18px}
+
+header{border-bottom:1px solid var(--linea)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px}
+.marca{font-family:"DM Serif Display",serif;font-size:2rem;line-height:1;letter-spacing:-.01em}
+.marca em{color:var(--salvia)}
+header .info{font-size:.85rem;color:var(--gris);text-align:right}
+
+.intro{display:grid;gap:6px;padding:26px 0 8px}
+.intro h1{font-family:"DM Serif Display",serif;font-weight:400;font-size:clamp(1.8rem,6vw,2.8rem);line-height:1.05;max-width:18ch}
+.intro p{color:var(--gris);max-width:52ch}
+
+.filtros{position:sticky;top:0;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);z-index:5;padding:12px 0;border-bottom:1px solid var(--linea)}
+.fila{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.fila::-webkit-scrollbar{display:none}
+.fila+.fila{margin-top:8px}
+.chip{flex:none;border:1px solid var(--linea);background:var(--blanco);padding:7px 14px;border-radius:999px;font-size:.9rem;font-weight:600}
+.chip[aria-pressed="true"]{background:var(--tinta);border-color:var(--tinta);color:#fff}
+.chip.talle{min-width:44px;padding:7px 10px}
+.fila .lbl{flex:none;align-self:center;font-size:.82rem;color:var(--gris);margin-right:2px}
+.cuenta{font-size:.85rem;color:var(--gris);padding:14px 0 0}
+
+.grilla{display:grid;grid-template-columns:repeat(2,1fr);gap:22px 14px;padding:14px 0 40px}
+.prod{background:none;border:0;text-align:left;display:block;width:100%}
+.foto{aspect-ratio:4/5;background:var(--piedra);border-radius:6px;display:grid;place-items:center;position:relative;overflow:hidden}
+.foto svg{width:70%;height:auto}
+.badge{position:absolute;top:10px;left:10px;background:var(--blanco);font-size:.75rem;font-weight:700;padding:4px 8px;border-radius:4px}
+.badge.nuevo{background:var(--salvia);color:#fff}
+.prod h3{font-weight:600;font-size:.98rem;margin-top:10px}
+.prod .precio{font-weight:700;margin-top:2px}
+.prod .precio s{color:var(--gris);font-weight:500;margin-left:6px;font-size:.88rem}
+.puntos{display:flex;gap:5px;margin-top:7px}
+.puntos i{width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,.15);display:block}
+.vacio{grid-column:1/-1;padding:40px 0;color:var(--gris);text-align:center}
+
+dialog{border:0;padding:0;width:100%;max-width:900px;max-height:100dvh;border-radius:14px 14px 0 0;margin:auto auto 0;color:var(--tinta)}
+dialog::backdrop{background:rgba(35,35,35,.5)}
+.det{display:grid}
+.det .foto{border-radius:0;aspect-ratio:auto;height:min(42vh,420px)}
+.det .foto svg{width:auto;height:78%}
+.det .cuerpo{padding:20px 20px 24px}
+.det h2{font-family:"DM Serif Display",serif;font-weight:400;font-size:1.8rem;line-height:1.05}
+.det .precio{font-size:1.2rem;font-weight:700;margin:6px 0 4px}
+.det .desc{color:var(--gris);font-size:.95rem}
+.det h4{font-size:.85rem;font-weight:700;margin:18px 0 8px}
+.colores{display:flex;gap:10px}
+.color{width:34px;height:34px;border-radius:50%;border:2px solid var(--blanco);box-shadow:0 0 0 1px var(--linea)}
+.color[aria-pressed="true"]{box-shadow:0 0 0 2px var(--tinta)}
+.stock{font-size:.85rem;color:var(--salvia);font-weight:600;margin-top:12px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:18px;background:var(--tinta);color:#fff;border:0;padding:15px;border-radius:8px;font-weight:700}
+.btn.wa{background:#1F9D55}
+.cerrar{position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:50%;border:0;background:var(--blanco);font-size:1.3rem;line-height:1;z-index:2}
+.burbuja{background:#DCF8C6;padding:12px 14px;border-radius:8px 8px 2px 8px;margin-top:14px;font-size:.93rem;white-space:pre-line;display:none}
+.aviso{font-size:.82rem;color:var(--gris);margin-top:8px;display:none}
+
+footer{background:var(--piedra);padding:26px 0;font-size:.9rem;color:var(--gris)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+footer b{color:var(--tinta)}
+
+@media (min-width:700px){
+  .grilla{grid-template-columns:repeat(3,1fr);gap:28px 20px}
+  dialog{border-radius:14px;margin:auto}
+  .det{grid-template-columns:1fr 1fr}
+  .det .foto{height:auto;min-height:440px}
+}
+@media (min-width:1000px){.grilla{grid-template-columns:repeat(4,1fr)}}
+@media (orientation:landscape) and (max-height:500px){
+  .det .foto{min-height:0;height:100%}
+  dialog{max-height:96dvh;border-radius:14px;margin:auto}
+  .det{grid-template-columns:1fr 1.3fr}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="marca">Lupe<em>.</em></div>
+    <div class="info">Esteban Adrogué 1180<br>Lun a sáb, 10 a 20</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <h1>Temporada primavera, lista para probar</h1>
+    <p>Elegí lo que te guste y consultanos talle y color por WhatsApp. Te lo separamos 48 horas o te lo mandamos por moto a Adrogué, Burzaco y Lomas.</p>
+  </div>
+</main>
+
+<div class="filtros">
+  <div class="wrap">
+    <div class="fila" id="cats" role="group" aria-label="Categoría"></div>
+    <div class="fila" id="talles" role="group" aria-label="Talle"><span class="lbl">Talle</span></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <p class="cuenta" id="cuenta"></p>
+  <div class="grilla" id="grilla"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><b>Lupe</b> · Esteban Adrogué 1180, Adrogué</span>
+    <span>Cambios dentro de los 30 días con ticket</span>
+  </div>
+</footer>
+
+<dialog id="dlg"><div style="position:relative">
+  <button class="cerrar" id="cerrar" aria-label="Cerrar">×</button>
+  <div class="det">
+    <div class="foto" id="dFoto"></div>
+    <div class="cuerpo">
+      <h2 id="dNom"></h2>
+      <div class="precio" id="dPre"></div>
+      <p class="desc" id="dDesc"></p>
+      <h4>Color: <span id="dColN" style="font-weight:500"></span></h4>
+      <div class="colores" id="dCol"></div>
+      <h4>Talle</h4>
+      <div class="fila" id="dTal" style="flex-wrap:wrap"></div>
+      <p class="stock" id="dStock"></p>
+      <button class="btn wa" id="consultar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2z"/></svg>
+        Consultar por WhatsApp
+      </button>
+      <div class="burbuja" id="burbuja"></div>
+      <p class="aviso" id="aviso">En el sitio real, este botón abre el chat de la tienda con este mensaje ya escrito.</p>
+    </div>
+  </div>
+</div></dialog>
+
+<script>
+const SIL={
+ remera:'<path d="M60 20l-30 12-18 30 22 12 10-14v100h112V60l10 14 22-12-18-30-30-12c-6 12-18 18-40 18S66 32 60 20z"/>',
+ vestido:'<path d="M78 14h44l-4 30 22 30-10 10 30 116H40L70 84 60 74l22-30z"/>',
+ pantalon:'<path d="M54 14h92l14 186h-44L102 74h-4l-14 126H40z"/>',
+ buzo:'<path d="M64 18l-34 12-22 92 24 6 18-60v116h100V68l18 60 24-6-22-92-34-12c-6 14-18 22-36 22S70 32 64 18z"/>',
+ campera:'<path d="M66 16l-36 14-22 106 26 6 16-70v120h48V30l2 0 2 0v162h48V72l16 70 26-6-22-106-36-14c-4 8-12 14-34 14S70 24 66 16z"/>',
+ pollera:'<path d="M66 40h68l40 150H26z"/><rect x="66" y="30" width="68" height="12"/>',
+};
+const svg=(t,c)=>`<svg viewBox="0 0 200 210" aria-hidden="true"><g fill="${c}" stroke="rgba(0,0,0,.12)" stroke-width="1.5">${SIL[t]}</g></svg>`;
+const P=[
+ {n:"Remera Malva",t:"remera",cat:"Remeras",p:18900,col:[["Malva","#C9A7C7"],["Blanco","#F8F8F6"],["Negro","#2B2B2B"]],tal:["S","M","L","XL"],d:"Algodón peinado, corte recto. Lavar del revés.",nuevo:1},
+ {n:"Musculosa Lino",t:"remera",cat:"Remeras",p:15500,col:[["Arena","#D9C7A8"],["Salvia","#9DB39C"]],tal:["S","M","L"],d:"Lino con algodón, fresca para el calor."},
+ {n:"Vestido Margarita",t:"vestido",cat:"Vestidos",p:42000,old:52000,col:[["Celeste","#A9C6DE"],["Rubor","#EBC9C1"]],tal:["S","M","L"],d:"Fibrana estampada, largo midi, con breteles regulables."},
+ {n:"Vestido Noche",t:"vestido",cat:"Vestidos",p:56500,col:[["Negro","#2B2B2B"],["Bordó","#6E2433"]],tal:["M","L","XL"],d:"Satén con forro. Ideal para eventos.",nuevo:1},
+ {n:"Jean Mom",t:"pantalon",cat:"Pantalones",p:38900,col:[["Azul medio","#5C7EA6"],["Celeste","#9DB7D3"]],tal:["36","38","40","42","44"],d:"Tiro alto, rígido. Calce holgado en la pierna."},
+ {n:"Pantalón Sastrero",t:"pantalon",cat:"Pantalones",p:41500,col:[["Beige","#CDBB9F"],["Negro","#2B2B2B"]],tal:["38","40","42","44"],d:"Pierna recta, con pinzas y bolsillos."},
+ {n:"Buzo Canguro",t:"buzo",cat:"Abrigos",p:34900,old:39900,col:[["Gris melange","#B9B9B4"],["Verde","#6F8A6F"]],tal:["S","M","L","XL"],d:"Frisa invisible, capucha y bolsillo canguro."},
+ {n:"Campera Denim",t:"campera",cat:"Abrigos",p:59900,col:[["Azul","#4E6E96"]],tal:["S","M","L"],d:"Jean rígido con botones metálicos.",nuevo:1},
+ {n:"Pollera Plisada",t:"pollera",cat:"Polleras",p:27500,col:[["Verde","#6F8A6F"],["Rubor","#EBC9C1"],["Negro","#2B2B2B"]],tal:["S","M","L"],d:"Plisado permanente, cintura elastizada."},
+ {n:"Pollera Jean",t:"pollera",cat:"Polleras",p:29900,col:[["Azul medio","#5C7EA6"]],tal:["36","38","40","42"],d:"Corte A, con tajo lateral."},
+ {n:"Remera Rayada",t:"remera",cat:"Remeras",p:19900,col:[["Azul y blanco","#7D95B5"],["Rojo y blanco","#C9665E"]],tal:["S","M","L","XL"],d:"Rayado marinero, manga corta."},
+ {n:"Vestido Camisero",t:"vestido",cat:"Vestidos",p:45900,col:[["Blanco","#F8F8F6"],["Celeste","#A9C6DE"]],tal:["S","M","L","XL"],d:"Poplín de algodón con cinto del mismo género."},
+];
+const plata=n=>"$"+n.toLocaleString("es-AR");
+const $=s=>document.querySelector(s);
+const CATS=["Todo",...new Set(P.map(p=>p.cat))];
+const TALLES=["S","M","L","XL","36","38","40","42","44"];
+let cat="Todo",talle=null;
+
+$("#cats").innerHTML=CATS.map(c=>`<button class="chip" aria-pressed="${c===cat}" data-c="${c}">${c}</button>`).join("");
+$("#talles").insertAdjacentHTML("beforeend",TALLES.map(t=>`<button class="chip talle" aria-pressed="false" data-t="${t}">${t}</button>`).join(""));
+$("#cats").onclick=e=>{const b=e.target.closest("[data-c]");if(!b)return;cat=b.dataset.c;document.querySelectorAll("#cats .chip").forEach(x=>x.setAttribute("aria-pressed",x===b));pintar()};
+$("#talles").onclick=e=>{const b=e.target.closest("[data-t]");if(!b)return;talle=talle===b.dataset.t?null:b.dataset.t;document.querySelectorAll("#talles .chip").forEach(x=>x.setAttribute("aria-pressed",x.dataset.t===talle));pintar()};
+
+function pintar(){
+  const l=P.map((p,i)=>({...p,i})).filter(p=>(cat==="Todo"||p.cat===cat)&&(!talle||p.tal.includes(talle)));
+  $("#cuenta").textContent=`${l.length} ${l.length===1?"prenda":"prendas"}${talle?" en talle "+talle:""}`;
+  $("#grilla").innerHTML=l.length?l.map(p=>`
+   <button class="prod" data-i="${p.i}">
+    <div class="foto">${p.nuevo?'<span class="badge nuevo">Nuevo</span>':p.old?'<span class="badge">Oferta</span>':""}${svg(p.t,p.col[0][1])}</div>
+    <h3>${p.n}</h3>
+    <div class="precio">${plata(p.p)}${p.old?`<s>${plata(p.old)}</s>`:""}</div>
+    <div class="puntos">${p.col.map(c=>`<i style="background:${c[1]}" title="${c[0]}"></i>`).join("")}</div>
+   </button>`).join(""):`<p class="vacio">No hay prendas de esa categoría en talle ${talle}. Sacá el filtro de talle para ver todo.</p>`;
+}
+pintar();
+
+const dlg=$("#dlg");let sel={};
+$("#grilla").onclick=e=>{const b=e.target.closest(".prod");if(!b)return;abrir(P[b.dataset.i])};
+function abrir(p){
+  sel={p,c:0,t:talle&&p.tal.includes(talle)?talle:null};
+  $("#dNom").textContent=p.n;
+  $("#dPre").innerHTML=plata(p.p)+(p.old?` <s style="color:#6F6F6B;font-weight:500;font-size:.95rem">${plata(p.old)}</s>`:"");
+  $("#dDesc").textContent=p.d;
+  $("#dCol").innerHTML=p.col.map((c,i)=>`<button class="color" style="background:${c[1]}" aria-label="${c[0]}" data-i="${i}"></button>`).join("");
+  $("#dTal").innerHTML=p.tal.map(t=>`<button class="chip talle" data-t="${t}">${t}</button>`).join("");
+  $("#burbuja").style.display=$("#aviso").style.display="none";
+  actualizar();dlg.showModal();
+}
+function actualizar(){
+  const {p,c,t}=sel;
+  $("#dFoto").innerHTML=svg(p.t,p.col[c][1]);
+  $("#dColN").textContent=p.col[c][0];
+  document.querySelectorAll("#dCol .color").forEach(b=>b.setAttribute("aria-pressed",+b.dataset.i===c));
+  document.querySelectorAll("#dTal .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===t));
+  $("#dStock").textContent=t?(t==="L"||t==="40"?"Queda 1 en ese talle":"Hay stock en ese talle"):"Elegí un talle para ver el stock";
+}
+$("#dCol").onclick=e=>{const b=e.target.closest(".color");if(b){sel.c=+b.dataset.i;actualizar()}};
+$("#dTal").onclick=e=>{const b=e.target.closest(".chip");if(b){sel.t=b.dataset.t;actualizar()}};
+$("#consultar").onclick=()=>{
+  const {p,c,t}=sel;
+  $("#burbuja").textContent=`Hola Lupe! Me interesa el ${p.n} (${plata(p.p)}) en color ${p.col[c][0].toLowerCase()}${t?", talle "+t:""}. ¿Lo tienen para retirar?`;
+  $("#burbuja").style.display="block";$("#aviso").style.display="block";
+};
+$("#cerrar").onclick=()=>dlg.close();
+dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
+</script>
+</body>
+</html>

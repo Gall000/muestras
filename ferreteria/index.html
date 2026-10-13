@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Ferretería El Tornillo — Quilmes</title>
+<meta name="description" content="Ferretería, bulonería y pinturería en Quilmes centro. Herramientas, plomería, electricidad y corte de llaves.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --amarillo:#F2C230; --acero:#2E3A44; --papel:#F6F6F2; --tinta:#1C2228; --gris:#5B6670; --linea:#D9DAD4; --verde:#2F8F4E;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Archivo",system-ui,sans-serif;font-stretch:100%;background:var(--papel);color:var(--tinta);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--acero);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+header.top{background:var(--acero);color:#fff}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;padding-bottom:12px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:850;font-stretch:115%;letter-spacing:-.01em;font-size:1.1rem}
+.logo svg{flex:none}
+.estado{font-size:.85rem;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.estado i{width:9px;height:9px;border-radius:50%;background:#aaa;display:inline-block}
+.estado.abierto i{background:#5BD17E}
+.estado.cerrado i{background:#E46A5A}
+nav.menu{display:none;gap:22px;font-size:.95rem}
+nav.menu a{text-decoration:none;opacity:.85}
+nav.menu a:hover{opacity:1}
+
+.hero{background:var(--amarillo);padding:44px 0 0;overflow:hidden}
+.hero h1{font-weight:900;font-stretch:125%;font-size:clamp(2.4rem,9vw,5.6rem);line-height:.92;letter-spacing:-.03em;max-width:12ch}
+.hero p{font-size:1.1rem;max-width:42ch;margin-top:18px}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-weight:700;padding:13px 18px;border:2px solid var(--tinta);background:var(--tinta);color:#fff;text-decoration:none;cursor:pointer;border-radius:4px}
+.btn.claro{background:transparent;color:var(--tinta)}
+.pasillos{display:flex;gap:10px;margin-top:10px;padding-top:30px;overflow-x:auto;padding-bottom:0;scrollbar-width:none}
+.pasillos::-webkit-scrollbar{display:none}
+.cartel{flex:none;background:var(--acero);color:#fff;padding:12px 16px 16px;min-width:150px;border-radius:4px 4px 0 0;position:relative}
+.cartel::before,.cartel::after{content:"";position:absolute;top:-30px;width:2px;height:30px;background:var(--acero)}
+.cartel::before{left:22px}.cartel::after{right:22px}
+.cartel small{display:block;font-size:.75rem;opacity:.7}
+.cartel b{font-weight:800;font-stretch:110%;font-size:1.05rem}
+
+section{padding:56px 0}
+h2{font-weight:850;font-stretch:115%;font-size:clamp(1.6rem,4.5vw,2.4rem);letter-spacing:-.02em;line-height:1.05;margin-bottom:8px}
+.sub{color:var(--gris);max-width:55ch;margin-bottom:28px}
+
+.rubros{display:grid;grid-template-columns:1fr;gap:1px;background:var(--linea);border:1px solid var(--linea)}
+.rubro{background:#fff;padding:20px;display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start}
+.rubro h3{font-size:1.1rem;font-weight:750}
+.rubro p{color:var(--gris);font-size:.95rem}
+.ico{width:44px;height:44px;background:var(--amarillo);display:grid;place-items:center;border-radius:4px}
+
+.servicios{background:var(--tinta);color:#fff}
+.servicios .sub{color:#B9C2C9}
+.lista-serv{display:grid;gap:14px}
+.serv{border-top:2px solid var(--amarillo);padding-top:14px}
+.serv h3{font-weight:750;font-size:1.1rem}
+.serv p{color:#B9C2C9;font-size:.95rem}
+
+.visita{display:grid;gap:28px}
+table.horarios{width:100%;border-collapse:collapse;font-size:1rem}
+.horarios td{padding:10px 0;border-bottom:1px solid var(--linea)}
+.horarios td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.horarios tr.hoy td{font-weight:800}
+.mapa{background:#E7E8E2;border:1px solid var(--linea);aspect-ratio:4/3;position:relative;overflow:hidden;border-radius:4px}
+.mapa svg{width:100%;height:100%;display:block}
+.dir{margin-top:12px;font-weight:700}
+.dir span{display:block;font-weight:400;color:var(--gris)}
+
+footer{background:var(--acero);color:#C9D0D5;padding:28px 0 90px;font-size:.9rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+
+.wa{position:fixed;right:16px;bottom:16px;width:58px;height:58px;border-radius:50%;background:#25D366;border:0;display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.25);cursor:pointer;z-index:20}
+
+dialog{border:0;border-radius:8px;padding:0;max-width:min(420px,92vw);width:100%;color:var(--tinta)}
+dialog::backdrop{background:rgba(28,34,40,.55)}
+.dlg{padding:22px}
+.dlg h3{font-weight:800;margin-bottom:6px}
+.dlg p{color:var(--gris);font-size:.95rem}
+.burbuja{background:#DCF8C6;padding:12px 14px;border-radius:8px 8px 2px 8px;margin:16px 0;font-size:.95rem;white-space:pre-line}
+.dlg .btn{width:100%;justify-content:center}
+
+@media (min-width:700px){
+  nav.menu{display:flex}
+  .rubros{grid-template-columns:repeat(2,1fr)}
+  .lista-serv{grid-template-columns:repeat(3,1fr);gap:28px}
+  .visita{grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+  .hero{padding-top:64px}
+}
+@media (min-width:980px){.rubros{grid-template-columns:repeat(3,1fr)}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#F2C230"/><path d="M14 6v16M9 9h10M9 13h10M9 17h10" stroke="#2E3A44" stroke-width="2.2"/></svg>
+      El Tornillo
+    </a>
+    <nav class="menu" aria-label="Secciones">
+      <a href="#rubros">Qué tenemos</a><a href="#servicios">Servicios</a><a href="#visita">Cómo llegar</a>
+    </nav>
+    <span class="estado" id="estado"><i></i><span>Horario</span></span>
+  </div>
+</header>
+
+<section class="hero" style="padding-bottom:0">
+  <div class="wrap">
+    <h1>Lo que se rompe, acá lo arreglás.</h1>
+    <p>Ferretería, bulonería y pinturería en Quilmes centro desde 1987. Si no lo tenemos, te lo conseguimos en el día.</p>
+    <div class="cta">
+      <button class="btn" data-wa="Hola, quería consultar si tienen ">Consultar por WhatsApp</button>
+      <a class="btn claro" href="#visita">Ver horarios y dirección</a>
+    </div>
+    <div class="pasillos" aria-label="Pasillos del local">
+      <div class="cartel"><small>Pasillo 1</small><b>Herramientas</b></div>
+      <div class="cartel"><small>Pasillo 2</small><b>Bulonería</b></div>
+      <div class="cartel"><small>Pasillo 3</small><b>Plomería</b></div>
+      <div class="cartel"><small>Pasillo 4</small><b>Electricidad</b></div>
+      <div class="cartel"><small>Pasillo 5</small><b>Pinturería</b></div>
+      <div class="cartel"><small>Pasillo 6</small><b>Jardín</b></div>
+    </div>
+  </div>
+</section>
+
+<section id="rubros">
+  <div class="wrap">
+    <h2>Qué vas a encontrar</h2>
+    <p class="sub">Más de 8.000 artículos en el local. Preguntá por WhatsApp antes de venir y te lo dejamos separado.</p>
+    <div class="rubros">
+      <div class="rubro"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C2228" stroke-width="2"><path d="M14 4l6 6-3 3-6-6zM11 7L3 15v6h6l8-8"/></svg></div><div><h3>Herramientas</h3><p>Manuales y eléctricas: taladros, amoladoras, llaves, sierras. Marcas que se consiguen repuesto.</p></div></div>
+      <div class="rubro"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C2228" stroke-width="2"><path d="M12 3v14M8 7h8M8 11h8M8 15h8M10 21h4"/></svg></div><div><h3>Bulonería</h3><p>Tornillos, bulones, tarugos y fijaciones sueltos o por caja. Te los contamos por unidad.</p></div></div>
+      <div class="rubro"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C2228" stroke-width="2"><path d="M4 8h10v4h6v8M14 12V8"/><circle cx="20" cy="20" r="1"/></svg></div><div><h3>Plomería y gas</h3><p>Caños, conexiones, griferías, flexibles y repuestos de depósito. Matriculados para gas.</p></div></div>
+      <div class="rubro"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C2228" stroke-width="2"><path d="M13 2L5 14h6l-1 8 8-12h-6z"/></svg></div><div><h3>Electricidad</h3><p>Cables, térmicas, disyuntores, tomas y lámparas LED. Te asesoramos con el tablero.</p></div></div>
+      <div class="rubro"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C2228" stroke-width="2"><rect x="4" y="3" width="13" height="7" rx="1"/><path d="M17 6h3v6h-8v3M11 15h2v6h-2z"/></svg></div><div><h3>Pinturería</h3><p>Látex, esmaltes, impermeabilizantes y rodillos. Preparamos color a máquina en el momento.</p></div></div>
+      <div class="rubro"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C2228" stroke-width="2"><path d="M12 21V11M12 11c0-4 3-7 7-7 0 4-3 7-7 7zM12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/></svg></div><div><h3>Jardín</h3><p>Mangueras, regadores, tijeras de podar, tierra y semillas de estación.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="servicios" id="servicios">
+  <div class="wrap">
+    <h2>Además, en el mostrador</h2>
+    <p class="sub">Trabajos que hacemos en el momento o de un día para el otro.</p>
+    <div class="lista-serv">
+      <div class="serv"><h3>Copia de llaves</h3><p>Comunes, de seguridad y de auto con chip. En el momento.</p></div>
+      <div class="serv"><h3>Corte a medida</h3><p>Vidrio, caños, varillas y cadenas. Traé la medida y nos ocupamos.</p></div>
+      <div class="serv"><h3>Pintura a máquina</h3><p>Igualamos el color de una muestra o de la carta. Listo en 15 minutos.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="visita">
+  <div class="wrap visita">
+    <div>
+      <h2>Cuándo venir</h2>
+      <p class="sub" style="margin-bottom:16px">Estacionamiento sobre Mitre después de las 13.</p>
+      <table class="horarios" id="horarios">
+        <tr data-d="1"><td>Lunes</td><td>8 a 13 y 15:30 a 19:30</td></tr>
+        <tr data-d="2"><td>Martes</td><td>8 a 13 y 15:30 a 19:30</td></tr>
+        <tr data-d="3"><td>Miércoles</td><td>8 a 13 y 15:30 a 19:30</td></tr>
+        <tr data-d="4"><td>Jueves</td><td>8 a 13 y 15:30 a 19:30</td></tr>
+        <tr data-d="5"><td>Viernes</td><td>8 a 13 y 15:30 a 19:30</td></tr>
+        <tr data-d="6"><td>Sábado</td><td>8 a 13</td></tr>
+        <tr data-d="0"><td>Domingo</td><td>Cerrado</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="mapa" role="img" aria-label="Mapa: Av. Mitre 1450, entre Garibaldi y Brown">
+        <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="300" fill="#E7E8E2"/>
+          <g fill="#F6F6F2"><rect x="0" y="0" width="120" height="110"/><rect x="150" y="0" width="120" height="110"/><rect x="300" y="0" width="100" height="110"/><rect x="0" y="140" width="120" height="160"/><rect x="150" y="140" width="120" height="160"/><rect x="300" y="140" width="100" height="160"/></g>
+          <rect x="0" y="110" width="400" height="30" fill="#fff"/>
+          <rect x="120" y="0" width="30" height="300" fill="#fff"/><rect x="270" y="0" width="30" height="300" fill="#fff"/>
+          <rect x="300" y="200" width="100" height="100" fill="#CFE3C8"/>
+          <text x="200" y="130" font-family="Archivo" font-size="12" fill="#5B6670" text-anchor="middle">Av. Mitre</text>
+          <text x="135" y="60" font-family="Archivo" font-size="11" fill="#5B6670" transform="rotate(-90 135 60)" text-anchor="middle">Garibaldi</text>
+          <text x="285" y="60" font-family="Archivo" font-size="11" fill="#5B6670" transform="rotate(-90 285 60)" text-anchor="middle">Brown</text>
+          <text x="350" y="255" font-family="Archivo" font-size="11" fill="#4A7A47" text-anchor="middle">Plaza</text>
+          <g transform="translate(212 92)"><path d="M0 0c-10 0-16 7-16 15 0 11 16 27 16 27s16-16 16-27c0-8-6-15-16-15z" fill="#2E3A44"/><circle cx="0" cy="15" r="6" fill="#F2C230"/></g>
+        </svg>
+      </div>
+      <p class="dir">Av. Mitre 1450, Quilmes<span>Entre Garibaldi y Brown, a tres cuadras de la estación.</span></p>
+      <div class="cta" style="margin-top:14px"><button class="btn" data-wa="Hola, ¿están abiertos ahora?">Escribinos</button><a class="btn claro" href="tel:+541142530000">Llamar</a></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Ferretería El Tornillo · Av. Mitre 1450, Quilmes</span>
+    <span>(011) 4253-0000</span>
+  </div>
+</footer>
+
+<button class="wa" data-wa="Hola, quería hacer una consulta" aria-label="Escribir por WhatsApp">
+  <svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 01-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.8 11.9 11.9 0 004.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 001.8-1.3 2.3 2.3 0 00.2-1.3c-.1-.1-.2-.2-.5-.3z"/></svg>
+</button>
+
+<dialog id="dlg"><div class="dlg">
+  <h3>Se abre WhatsApp</h3>
+  <p>En el sitio real, este botón abre el chat de la ferretería con el mensaje ya escrito:</p>
+  <div class="burbuja" id="msg"></div>
+  <form method="dialog"><button class="btn">Entendido</button></form>
+</div></dialog>
+
+<script>
+// Abierto / cerrado según la hora de Buenos Aires
+(function(){
+  const now=new Date(new Date().toLocaleString("en-US",{timeZone:"America/Argentina/Buenos_Aires"}));
+  const d=now.getDay(), m=now.getHours()*60+now.getMinutes();
+  const t=[[480,780],[930,1170]];
+  const franjas=d===0?[]:d===6?[t[0]]:t;
+  const abierto=franjas.some(([a,b])=>m>=a&&m<b);
+  const el=document.getElementById("estado");
+  el.classList.add(abierto?"abierto":"cerrado");
+  el.querySelector("span").textContent=abierto?"Abierto ahora":"Cerrado ahora";
+  const fila=document.querySelector(`#horarios tr[data-d="${d}"]`); if(fila) fila.classList.add("hoy");
+})();
+const dlg=document.getElementById("dlg");
+document.querySelectorAll("[data-wa]").forEach(b=>b.addEventListener("click",()=>{
+  document.getElementById("msg").textContent=b.dataset.wa+"…";
+  dlg.showModal();
+}));
+</script>
+</body>
+</html>

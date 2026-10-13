@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Panadería La Espiga — Pedidos</title>
+<meta name="description" content="Hacé tu pedido a Panadería La Espiga, Lanús Oeste. Retirás en el local o te lo llevamos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
+<style>
+:root{--azul:#24507A;--azul2:#E6EEF6;--trigo:#E2B65C;--corteza:#6B3E26;--fondo:#F4F6F8;--blanco:#FFFFFF;--tinta:#1B2733;--gris:#5F6B77;--linea:#DCE3EA;--ok:#1F8A4C}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Bricolage Grotesque",system-ui,sans-serif;background:var(--fondo);color:var(--tinta);-webkit-font-smoothing:antialiased;line-height:1.45;padding-bottom:96px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--trigo);outline-offset:2px}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+
+.cab{background:var(--azul);color:#fff;padding:22px 0 26px;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 14px,transparent 14px 28px)}
+.cab .wrap{display:flex;gap:16px;align-items:center}
+.sello{flex:none;width:64px;height:64px;border-radius:50%;background:var(--blanco);display:grid;place-items:center;border:3px solid var(--trigo)}
+.cab h1{font-size:clamp(1.6rem,6vw,2.4rem);font-weight:800;line-height:1;letter-spacing:-.02em}
+.cab p{color:#C9D8E7;font-size:.95rem;margin-top:4px}
+.aviso{background:var(--trigo);color:var(--corteza);font-weight:600;font-size:.92rem;padding:10px 0}
+
+.cats{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:16px 0 4px}
+.cats::-webkit-scrollbar{display:none}
+.cats a{flex:none;text-decoration:none;color:var(--azul);background:var(--azul2);font-weight:700;padding:8px 14px;border-radius:999px;font-size:.92rem}
+
+.sec{padding-top:18px;scroll-margin-top:10px}
+.sec h2{font-size:1.35rem;font-weight:800;letter-spacing:-.01em;margin-bottom:10px}
+.prods{display:grid;gap:10px}
+.prod{background:var(--blanco);border:1px solid var(--linea);border-radius:12px;padding:12px;display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center}
+.prod.en{border-color:var(--azul);box-shadow:inset 3px 0 0 var(--azul)}
+.emo{width:56px;height:56px;border-radius:10px;background:var(--azul2);display:grid;place-items:center;font-size:1.9rem}
+.prod h3{font-size:1rem;font-weight:700;line-height:1.2}
+.prod p{font-size:.85rem;color:var(--gris)}
+.prod .pr{font-weight:700;font-size:.95rem;margin-top:2px}
+.prod .pr small{font-weight:500;color:var(--gris)}
+.step{display:flex;align-items:center;gap:0;border:1px solid var(--linea);border-radius:999px;overflow:hidden;background:var(--blanco)}
+.step button{width:38px;height:38px;border:0;background:none;font-size:1.25rem;font-weight:700;color:var(--azul)}
+.step button:disabled{color:#B6C0CA;cursor:default}
+.step span{min-width:30px;text-align:center;font-weight:800;font-variant-numeric:tabular-nums}
+.agregar{border:0;background:var(--azul);color:#fff;border-radius:999px;padding:9px 16px;font-weight:700}
+
+.barra{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--fondo) 30%);z-index:10;transform:translateY(110%);transition:transform .25s}
+.barra.ver{transform:none}
+.barra button{width:100%;max-width:948px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;background:var(--corteza);color:#fff;border:0;border-radius:14px;padding:15px 18px;font-weight:700;font-size:1.02rem}
+.barra .n{background:rgba(255,255,255,.18);border-radius:999px;padding:2px 10px;margin-right:8px}
+
+dialog{border:0;padding:0;width:100%;max-width:560px;max-height:94dvh;border-radius:18px 18px 0 0;margin:auto auto 0;color:var(--tinta)}
+dialog::backdrop{background:rgba(27,39,51,.55)}
+.hoja{padding:20px 18px 22px}
+.hoja h2{font-size:1.4rem;font-weight:800;display:flex;justify-content:space-between;align-items:center}
+.x{border:0;background:var(--fondo);width:36px;height:36px;border-radius:50%;font-size:1.2rem}
+.resumen{margin:12px 0 4px;border-top:1px solid var(--linea)}
+.resumen div{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--linea);font-size:.95rem}
+.resumen .tot{font-weight:800;font-size:1.05rem;border-bottom:0}
+.campo{display:grid;gap:6px;margin-top:14px}
+.campo>span{font-weight:700;font-size:.9rem}
+.campo input,.campo select,.campo textarea{border:1px solid var(--linea);border-radius:10px;padding:11px 12px;background:var(--blanco);width:100%}
+.opc{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opc label{border:1px solid var(--linea);border-radius:10px;padding:10px 12px;display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+.opc label:has(input:checked){border-color:var(--azul);background:var(--azul2)}
+.opc small{display:block;color:var(--gris);font-size:.8rem}
+.enviar{width:100%;margin-top:18px;background:var(--ok);color:#fff;border:0;border-radius:12px;padding:15px;font-weight:800;font-size:1.02rem}
+.err{color:#B42318;font-size:.88rem;margin-top:8px;min-height:1em}
+.ok{text-align:center;padding:10px 0 4px}
+.ok .tilde{width:64px;height:64px;border-radius:50%;background:var(--ok);display:grid;place-items:center;margin:0 auto 12px}
+.ok h3{font-size:1.4rem;font-weight:800}
+.ok p{color:var(--gris)}
+.burbuja{background:#DCF8C6;padding:12px 14px;border-radius:10px 10px 2px 10px;margin-top:16px;font-size:.9rem;white-space:pre-line;text-align:left;font-family:system-ui,sans-serif}
+.chico{font-size:.8rem;color:var(--gris);margin-top:8px}
+
+@media (min-width:700px){
+  .prods{grid-template-columns:1fr 1fr}
+  dialog{border-radius:18px;margin:auto}
+}
+@media (orientation:landscape) and (max-height:500px){dialog{border-radius:18px;margin:auto}}
+@media (prefers-reduced-motion:reduce){.barra{transition:none}}
+</style>
+</head>
+<body>
+<header class="cab">
+  <div class="wrap">
+    <div class="sello" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#6B3E26" stroke-width="1.8" stroke-linecap="round"><path d="M12 22V8M12 8c-2-1-3-3-3-5 2 0 3 2 3 5zm0 0c2-1 3-3 3-5-2 0-3 2-3 5zM12 13c-2-1-3-3-3-5 2 0 3 2 3 5zm0 0c2-1 3-3 3-5-2 0-3 2-3 5zM12 18c-2-1-3-3-3-5 2 0 3 2 3 5zm0 0c2-1 3-3 3-5-2 0-3 2-3 5z"/></svg></div>
+    <div>
+      <h1>Panadería La Espiga</h1>
+      <p>Hacé tu pedido y lo retirás sin hacer fila, o te lo llevamos.</p>
+    </div>
+  </div>
+</header>
+<div class="aviso"><div class="wrap">Pedidos para hoy hasta las 18. Envíos en Lanús Oeste y Remedios de Escalada.</div></div>
+
+<main class="wrap">
+  <nav class="cats" id="cats" aria-label="Categorías"></nav>
+  <div id="lista"></div>
+</main>
+
+<div class="barra" id="barra"><button id="verPedido"><span><span class="n" id="bN">0</span>Ver mi pedido</span><span id="bT">$0</span></button></div>
+
+<dialog id="dlg"><div class="hoja" id="hoja"></div></dialog>
+
+<script>
+const PROD=[
+ {c:"Facturas",items:[
+  ["med","🥐","Medialunas de manteca","Docena",9600],
+  ["medg","🥐","Medialunas de grasa","Docena",8400],
+  ["fac","🍩","Facturas surtidas","Docena",10800,"Vigilantes, bolas de fraile, cañoncitos y tortitas negras."],
+  ["chi","🥖","Chipá","1/4 kg",4200],
+ ]},
+ {c:"Pan",items:[
+  ["fra","🥖","Pan francés","1 kg",3600,"Del horno de la mañana y de las 17."],
+  ["mig","🍞","Pan de miga","Plancha",5200],
+  ["sal","🥨","Grisines","1/4 kg",2900],
+ ]},
+ {c:"Sándwiches",items:[
+  ["sjq","🥪","Sándwiches de miga jamón y queso","Docena",14400],
+  ["ssu","🥪","Sándwiches de miga surtidos","Docena",15600,"Jamón y queso, lechuga y tomate, huevo y aceituna."],
+ ]},
+ {c:"Tortas",items:[
+  ["rog","🍰","Rogel","Entera, 12 porciones",29000,"Con 24 h de anticipación."],
+  ["cho","🎂","Chocotorta","Entera, 10 porciones",24500],
+  ["pas","🥧","Pastafrola de membrillo","Entera",11500],
+ ]},
+];
+const IDX={};PROD.forEach(s=>s.items.forEach(i=>IDX[i[0]]=i));
+const plata=n=>"$"+n.toLocaleString("es-AR");
+const $=s=>document.querySelector(s);
+const cant={};
+const slug=s=>s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+
+$("#cats").innerHTML=PROD.map(s=>`<a href="#${slug(s.c)}">${s.c}</a>`).join("");
+$("#lista").innerHTML=PROD.map(s=>`<section class="sec" id="${slug(s.c)}"><h2>${s.c}</h2><div class="prods">${s.items.map(([id,e,n,u,p,d])=>`
+ <div class="prod" id="p-${id}">
+  <div class="emo" aria-hidden="true">${e}</div>
+  <div><h3>${n}</h3>${d?`<p>${d}</p>`:""}<div class="pr">${plata(p)} <small>/ ${u}</small></div></div>
+  <div class="ctl" data-id="${id}"></div>
+ </div>`).join("")}</div></section>`).join("");
+
+function ctl(id){
+  const n=cant[id]||0, el=document.querySelector(`.ctl[data-id="${id}"]`);
+  el.innerHTML=n?`<div class="step"><button data-a="-" aria-label="Sacar uno">−</button><span aria-live="polite">${n}</span><button data-a="+" aria-label="Agregar uno">+</button></div>`:`<button class="agregar" data-a="+">Agregar</button>`;
+  document.getElementById("p-"+id).classList.toggle("en",n>0);
+}
+Object.keys(IDX).forEach(ctl);
+$("#lista").addEventListener("click",e=>{
+  const b=e.target.closest("[data-a]");if(!b)return;
+  const id=b.closest(".ctl").dataset.id;
+  cant[id]=Math.max(0,(cant[id]||0)+(b.dataset.a==="+"?1:-1));
+  ctl(id);barra();
+});
+const items=()=>Object.entries(cant).filter(([,n])=>n>0).map(([id,n])=>({id,n,i:IDX[id]}));
+const subtotal=()=>items().reduce((s,x)=>s+x.n*x.i[4],0);
+function barra(){
+  const l=items(),u=l.reduce((s,x)=>s+x.n,0);
+  $("#bN").textContent=u;$("#bT").textContent=plata(subtotal());
+  $("#barra").classList.toggle("ver",u>0);
+}
+
+const dlg=$("#dlg");
+let entrega="retiro";
+$("#verPedido").onclick=()=>{form();dlg.showModal()};
+dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
+const ENVIO=1500;
+function form(){
+  const l=items(),sub=subtotal(),env=entrega==="envio"?ENVIO:0;
+  $("#hoja").innerHTML=`
+   <h2>Tu pedido <button class="x" onclick="dlg.close()" aria-label="Cerrar">×</button></h2>
+   <div class="resumen">${l.map(x=>`<div><span>${x.n} × ${x.i[2]} <small style="color:#5F6B77">(${x.i[3]})</small></span><b>${plata(x.n*x.i[4])}</b></div>`).join("")}
+    ${env?`<div><span>Envío</span><b>${plata(env)}</b></div>`:""}
+    <div class="tot"><span>Total</span><span>${plata(sub+env)}</span></div></div>
+   <div class="campo"><span>¿Cómo lo recibís?</span><div class="opc">
+    <label><input type="radio" name="ent" value="retiro" ${entrega==="retiro"?"checked":""}><span>Retiro en el local<small>Sin cargo</small></span></label>
+    <label><input type="radio" name="ent" value="envio" ${entrega==="envio"?"checked":""}><span>Envío a domicilio<small>${plata(ENVIO)}</small></span></label>
+   </div></div>
+   <label class="campo"><span>Tu nombre</span><input id="fNom" autocomplete="name" placeholder="Ej. Carla"></label>
+   ${entrega==="envio"?`<label class="campo"><span>Dirección</span><input id="fDir" autocomplete="street-address" placeholder="Calle, número y entre calles"></label>`:""}
+   <label class="campo"><span>¿Para cuándo?</span><select id="fHora">
+    <option>Hoy, 17 a 18 h</option><option>Hoy, 18 a 19 h</option><option>Mañana, 8 a 9 h</option><option>Mañana, 9 a 10 h</option><option>Mañana, 17 a 18 h</option></select></label>
+   <label class="campo"><span>Pago</span><select id="fPago"><option>Efectivo</option><option>Transferencia</option><option>Mercado Pago</option></select></label>
+   <label class="campo"><span>Algo más <small style="font-weight:400;color:#5F6B77">(opcional)</small></span><textarea id="fObs" rows="2" placeholder="Ej. medialunas bien doradas"></textarea></label>
+   <p class="err" id="err"></p>
+   <button class="enviar" id="enviar">Enviar pedido · ${plata(sub+env)}</button>`;
+  document.querySelectorAll('input[name="ent"]').forEach(r=>r.onchange=()=>{const nom=$("#fNom").value;entrega=r.value;form();$("#fNom").value=nom});
+  $("#enviar").onclick=enviar;
+}
+function enviar(){
+  const nom=$("#fNom").value.trim(),dir=$("#fDir")?.value.trim();
+  if(!nom){$("#err").textContent="Falta tu nombre para saber de quién es el pedido.";$("#fNom").focus();return}
+  if(entrega==="envio"&&!dir){$("#err").textContent="Falta la dirección para el envío.";$("#fDir").focus();return}
+  const env=entrega==="envio"?ENVIO:0,obs=$("#fObs").value.trim();
+  const nro=Math.floor(1000+Math.random()*9000);
+  const msg=`*Pedido #${nro} — La Espiga*
+${items().map(x=>`• ${x.n} × ${x.i[2]} (${x.i[3]}) — ${plata(x.n*x.i[4])}`).join("\n")}${env?`\n• Envío — ${plata(env)}`:""}
+*Total: ${plata(subtotal()+env)}*
+
+Nombre: ${nom}
+${entrega==="envio"?"Envío a: "+dir:"Retira en el local"}
+Para: ${$("#fHora").value}
+Pago: ${$("#fPago").value}${obs?"\nNota: "+obs:""}`;
+  $("#hoja").innerHTML=`<div class="ok">
+    <div class="tilde"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></div>
+    <h3>Pedido enviado</h3><p>${entrega==="envio"?"Te avisamos cuando sale el envío.":"Te esperamos "+$("#fHora").value.toLowerCase()+"."}</p>
+    <div class="burbuja">${msg.replace(/\*(.+?)\*/g,"<b>$1</b>")}</div>
+    <p class="chico">Así le llega a la panadería: ordenado, con el total hecho y sin ida y vuelta de mensajes.</p>
+    <button class="enviar" style="background:var(--azul)" id="otro">Hacer otro pedido</button></div>`;
+  $("#otro").onclick=()=>{Object.keys(cant).forEach(k=>cant[k]=0);Object.keys(IDX).forEach(ctl);barra();dlg.close();scrollTo(0,0)};
+}
+</script>
+</body>
+</html>
